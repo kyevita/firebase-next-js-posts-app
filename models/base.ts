@@ -15,22 +15,26 @@ export function applyOptions<T extends QueryOptions>(
     return query;
   }
 
+  console.log(options);
+
   if (options.where.length > 0) {
     for (const whereOpt of options.where) {
       query.where(whereOpt[0], whereOpt[1], whereOpt[2]);
     }
   }
 
+  if (options.orderBy.length > 0) {
+    if (options.hasOwnProperty("startAfter")) {
+      query
+        .orderBy(options.orderBy[0], options.orderBy[1])
+        .startAfter(options.startAfter.toDate());
+    } else {
+      query.orderBy(options.orderBy[0], options.orderBy[1]);
+    }
+  }
+
   if (options.limit) {
     query.limit(options.limit);
-  }
-
-  if (options.startAfter) {
-    query.startAfter(options.startAfter);
-  }
-
-  if (options.orderBy.length > 0) {
-    query.orderBy(options.orderBy[0], options.orderBy[1]);
   }
 
   return query;
