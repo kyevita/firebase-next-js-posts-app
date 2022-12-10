@@ -15,26 +15,24 @@ export function applyOptions<T extends QueryOptions>(
     return query;
   }
 
-  console.log(options);
-
   if (options.where.length > 0) {
     for (const whereOpt of options.where) {
-      query.where(whereOpt[0], whereOpt[1], whereOpt[2]);
+      query = query.where(whereOpt[0], whereOpt[1], whereOpt[2]);
     }
   }
 
   if (options.orderBy.length > 0) {
     if (options.hasOwnProperty("startAfter")) {
-      query
+      query = query
         .orderBy(options.orderBy[0], options.orderBy[1])
         .startAfter(options.startAfter.toDate());
     } else {
-      query.orderBy(options.orderBy[0], options.orderBy[1]);
+      query = query.orderBy(options.orderBy[0], options.orderBy[1]);
     }
   }
 
   if (options.limit) {
-    query.limit(options.limit);
+    query = query.limit(options.limit);
   }
 
   return query;

@@ -8,17 +8,18 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { username } = query;
   const userDoc = await getUserByUsername(username as string);
 
-  let user = null;
-  let posts = null;
-
-  if (userDoc) {
-    user = userDoc.data();
-    posts = await getPostsByUserDoc(userDoc, {
-      where: [["published", "==", true]],
-      orderBy: ["createdAt", "desc"],
-      limit: 5,
-    });
+  if (!userDoc) {
+    return {
+      notFound: true,
+    };
   }
+
+  const user = userDoc.data();
+  const posts = await getPostsByUserDoc(userDoc, {
+    where: [["published", "==", true]],
+    orderBy: ["createdAt", "desc"],
+    limit: 5,
+  });
 
   return {
     props: {

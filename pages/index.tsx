@@ -25,7 +25,7 @@ export async function getServerSideProps(context) {
 export default function Home(props: { posts: Post[] }) {
   const [posts, setPosts] = useState(props.posts);
   const [loading, setLoading] = useState(false);
-  const [postsEnd, setPostsEnd] = useState(false);
+  const [postsEnd, setPostsEnd] = useState(posts.length === 0);
 
   const getMorePosts = async () => {
     setLoading(true);
